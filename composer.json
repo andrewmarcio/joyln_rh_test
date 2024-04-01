@@ -1,0 +1,28 @@
+{
+    "name": "andrew/joy_in_rh",
+    "description": "Test project form JoyIn RH",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Domain\\": "src/Domain",
+            "Presentation\\": "src/Presentation",
+            "Application\\": "src/Application",
+            "Infra\\": "src/Infra",
+            "Support\\": "src/Support"
+        },
+        "files": [
+            "bootstrap/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "andrewmarcio",
+            "email": "andrewmarcio21@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "pecee/simple-router": "4.3.7.2"
+    }
+}
