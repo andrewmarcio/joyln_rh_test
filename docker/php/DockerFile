@@ -1,0 +1,25 @@
+FROM php:8.2-fpm
+
+# Install dependencies
+RUN apt update
+RUN apt install -y software-properties-common
+
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install opcache
+RUN apt-get install -y libjpeg-dev libpng-dev \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
+
+# Install composer
+RUN apt install -y curl
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+COPY . /var/www
+WORKDIR /var/www
+
+RUN chown -R www-data:www-data /var/www
+
+RUN composer install
+
+EXPOSE 9000
