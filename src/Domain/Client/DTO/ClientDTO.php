@@ -7,11 +7,10 @@ use Support\Response\HttpStatusCode;
 
 class ClientDTO
 {
-    protected string $name;
-    protected string $city;
-
-    public function __construct(string|null $name, string|null $city)
-    {
+    public function __construct(
+        protected string|null $name,
+        protected string|null $city
+    ) {
         $this->name = $name;
         $this->city = $city;
 

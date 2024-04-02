@@ -7,11 +7,10 @@ use Support\Response\HttpStatusCode;
 
 class ProductDTO
 {
-    public string $name;
-    public string $unit_value;
-
-    public function __construct(string|null $name, float|null $unit_value)
-    {
+    public function __construct(
+        protected string|null $name,
+        protected float|null $unit_value
+    ) {
         $this->name = $name;
         $this->unit_value = $unit_value;
 

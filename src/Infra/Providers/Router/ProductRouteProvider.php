@@ -4,8 +4,8 @@ namespace Infra\Providers\Router;
 
 use Support\Router\Router;
 
-class ProductRouteProvider {
-
+class ProductRouteProvider
+{
     public function __construct()
     {
         Router::group(

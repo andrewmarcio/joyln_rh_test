@@ -10,12 +10,11 @@ class RouteServiceProvider
     {
         return (new Router)
             ->group(
-                ['prefix' => 'test-dev-php'],
+                ['prefix' => 'test-dev-php/api'],
                 function () {
-                    Router::group(['prefix' => 'api'], function () {
-                        new ClientRouteProvider;
-                        new ProductRouteProvider;
-                    });
+                    new ClientRouteProvider;
+                    new ProductRouteProvider;
+                    new OrderRouteProvider;
                 }
             );
     }
