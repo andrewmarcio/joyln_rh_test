@@ -2,14 +2,13 @@
 
 namespace Presentation\Http\Controllers;
 
-use Application\Services\ClientService;
-use Domain\Client\DTO\ClientDTO;
+use Application\Services\ProductService;
+use Domain\Product\DTO\ProductDTO;
 use Support\Response\HttpStatusCode;
 
-class ClientController extends Controller
-{
+class ProductController extends Controller {
     public function __construct(
-        public ClientService $service = new ClientService
+        public ProductService $service = new ProductService
     ) {
     }
 
@@ -25,9 +24,9 @@ class ClientController extends Controller
 
     public function store(): mixed
     {
-        $dto = ClientDTO::fromArray([
+        $dto = ProductDTO::fromArray([
             "NOME" => input()->post("NOME")->value,
-            "CIDADE_NOME" => input()->post("CIDADE_NOME")->value,
+            "VLRUNIT" => input()->post("VLRUNIT")->value,
         ]);
 
         return responseJson($this->service->create($dto->toArray()), HttpStatusCode::HTTP_CREATED);
@@ -35,9 +34,9 @@ class ClientController extends Controller
 
     public function update(int $id): mixed
     {
-        $dto = ClientDTO::fromArray([
+        $dto = ProductDTO::fromArray([
             "NOME" => input()->find("NOME")->getValue(),
-            "CIDADE_NOME" => input()->find("CIDADE_NOME")->getValue(),
+            "VLRUNIT" => input()->find("VLRUNIT")->getValue(),
         ]);
         return responseJson($this->service->update($id, $dto->toArray()), HttpStatusCode::HTTP_OK);
     }
