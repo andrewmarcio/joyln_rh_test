@@ -13,6 +13,7 @@ class RouteServiceProvider
                 ['prefix' => 'test-dev-php'],
                 function () {
                     Router::group(['prefix' => 'api'], function () {
+                        (new ClientRouteProvider);
                     });
                 }
             );

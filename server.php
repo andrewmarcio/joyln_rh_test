@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -13,6 +14,7 @@ function createApp()
 try {
     createApp();
 } catch (\Throwable $th) {
+    throw $th;
     die((new Support\Handler\ErrorHandler(
         message: $th->getMessage(),
         code: $th->getCode(),

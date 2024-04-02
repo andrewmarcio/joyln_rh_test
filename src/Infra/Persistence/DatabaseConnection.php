@@ -18,14 +18,12 @@ class DatabaseConnection implements DatabaseConnectionInterface
         );
         $user = env('DB_USER');
         $password = env('DB_PASSWORD');
-
         try {
             $connection = new PDO($dsn, $user, $password);
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $connection;
         } catch (\PDOException $e) {
-            throw new $e;
-            die();
+            throw $e;
         }
     }
 

@@ -12,9 +12,7 @@ abstract class ORM extends DatabaseConnection
 {
     use ValidateEntityProperties;
 
-    private int $id;
-
-    private string $table;
+    protected string $table;
 
     private DatabaseConnection $connection;
     private PDOStatement $statement;
@@ -23,11 +21,6 @@ abstract class ORM extends DatabaseConnection
      * @var array<string, mixed> $query
      */
     private array $query = [];
-
-    /**
-     * @var array<string, mixed> $attributes
-     */
-    protected array $attributes = [];
 
 
     public function __construct()
@@ -73,7 +66,7 @@ abstract class ORM extends DatabaseConnection
         $this->query = array_merge($this->query, [
             $column,
             $condition,
-            str_pad($value, (strlen($value) + 2), "'", STR_PAD_BOTH),
+            str_pad((string) $value, (strlen((string) $value) + 2), "'", STR_PAD_BOTH),
         ]);
 
         return $this;
@@ -135,10 +128,10 @@ abstract class ORM extends DatabaseConnection
 
         $this->executeQuery(array_values($data));
 
-        return $this->latest()->first();
+        return (new static)->latest()->first();
     }
 
-    public function update(array $data = []): self
+    public function update(int $id, array $data = []): self
     {
         $data = $this->validateProperties($data);
 
@@ -146,22 +139,29 @@ abstract class ORM extends DatabaseConnection
             "UPDATE",
             $this->getTable(),
             "SET",
-            implode(", ", array_map(function ($property) {
-                return str_pad($property, (strlen($property) + 4), " = ?");
-            }, array_keys($data))),
+            implode(", ", array_merge(
+                array_map(function ($property) {
+                    return str_pad($property, (strlen($property) + 4), " = ?");
+                }, array_keys($data)),
+                ['updated_at = ?']
+            )),
             "WHERE",
             "id",
             "=",
             "?"
         ];
 
-        $this->executeQuery(array_merge(array_values($data), [$this->id]));
-        unset($this->attributes["data"]);
+        $this->executeQuery(array_merge(
+            array_values($data),
+            [date_format(new \DateTime(), 'Y-m-d H:i:s')],
+            [$id]
+        ));
+        unset($this->statement);
 
-        return $this->where("id", "=", $this->id)->first();
+        return (new static)->where("id", "=", $id)->first();
     }
 
-    public function delete(): bool
+    public function delete(int $id): bool
     {
         try {
             $this->query = [
@@ -173,8 +173,8 @@ abstract class ORM extends DatabaseConnection
                 "?",
             ];
 
-            $this->executeQuery([$this->id]);
-            unset($this->attributes);
+            $this->executeQuery([$id]);
+            unset($this->statement);
 
             return true;
         } catch (\Throwable $th) {
