@@ -2,6 +2,7 @@
 
 namespace Infra\Providers\Router;
 
+use Application\Middleware\VerifyToken;
 use Support\Router\Router;
 
 class OrderRouteProvider
@@ -9,7 +10,10 @@ class OrderRouteProvider
     public function __construct()
     {
         Router::group(
-            ["prefix" => 'pedidos'],
+            [
+                "prefix" => 'pedidos',
+                "middleware" => VerifyToken::class
+            ],
             function () {
                 Router::get("/", "OrderController@index", ["as" => "orders.index"]);
                 Router::get("/{id}", "OrderController@show", ["as" => "orders.show"]);

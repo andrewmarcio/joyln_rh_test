@@ -2,6 +2,7 @@
 
 namespace Infra\Providers\Router;
 
+use Application\Middleware\VerifyToken;
 use Support\Router\Router;
 
 class ProductRouteProvider
@@ -9,7 +10,10 @@ class ProductRouteProvider
     public function __construct()
     {
         Router::group(
-            ["prefix" => 'produtos'],
+            [
+                "prefix" => 'produtos',
+                "middleware" => VerifyToken::class
+            ],
             function () {
                 Router::get("/", "ProductController@index", ["as" => "products.index"]);
                 Router::get("/{id}", "ProductController@show", ["as" => "products.show"]);

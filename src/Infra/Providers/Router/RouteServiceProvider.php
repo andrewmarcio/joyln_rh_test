@@ -12,6 +12,7 @@ class RouteServiceProvider
             ->group(
                 ['prefix' => 'test-dev-php/api'],
                 function () {
+                    new AuthRouteProvider;
                     new ClientRouteProvider;
                     new ProductRouteProvider;
                     new OrderRouteProvider;

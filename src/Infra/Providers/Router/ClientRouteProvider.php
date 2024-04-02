@@ -2,6 +2,7 @@
 
 namespace Infra\Providers\Router;
 
+use Application\Middleware\VerifyToken;
 use Support\Router\Router;
 
 class ClientRouteProvider
@@ -9,7 +10,10 @@ class ClientRouteProvider
     public function __construct()
     {
         Router::group(
-            ["prefix" => 'clientes'],
+            [
+                "prefix" => 'clientes',
+                "middleware" => VerifyToken::class
+            ],
             function () {
                 Router::get('/', 'ClientController@index', ['as' => 'clients.index']);
                 Router::get('/{id}', 'ClientController@show', ['as' => 'clients.show']);
